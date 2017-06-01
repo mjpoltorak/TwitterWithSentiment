@@ -1,9 +1,9 @@
 import json
 from tweepy.streaming import StreamListener
+from textblob.sentiments import NaiveBayesAnalyzer
 from tweepy import OAuthHandler
 from tweepy import Stream
 from textblob import TextBlob
-
 import sys
 
 keyWord = input("Please enter a keyword (No spaces allowed): ")
@@ -23,22 +23,25 @@ class TweetStreamListener(StreamListener):
 
             if 'text' in dict_data:
                 # pass tweet into TextBlob
-                tweet = TextBlob(dict_data["text"])
+                tweet2 = TextBlob(dict_data["text"])
+                tweet = TextBlob(dict_data["text"], analyzer=NaiveBayesAnalyzer())
                 print(tweet)
 
                 # output sentiment polarity
                 print(tweet.sentiment)
+                print(tweet2.sentiment)
+                # print(tweet.sentiment)
 
                 # determine if sentiment is positive, negative, or neutral
-                if tweet.sentiment.polarity < 0:
-                    sentiment = "negative"
-                elif tweet.sentiment.polarity == 0:
-                    sentiment = "neutral"
-                else:
-                    sentiment = "positive"
+                # if tweet.sentiment.polarity < 0:
+                #     sentiment = "negative"
+                # elif tweet.sentiment.polarity == 0:
+                #     sentiment = "neutral"
+                # else:
+                #     sentiment = "positive"
 
                 # output sentiment
-                print(sentiment)
+                # print(sentiment)
             else:
                 print("HELP! NO TEXT")
 
@@ -50,16 +53,17 @@ class TweetStreamListener(StreamListener):
             print("Goodbye :)")
             sys.exit(0)  # or 1, or whatever
 
+
     # on failure
     def on_error(self, status):
         print(status)
 
 if __name__ == '__main__':
-    consumer_key = 'P1TpnobTYWuLnAWSPOIpp5FDj'
-    consumer_secret = 'oAZxnwVbEEKYivhzWLYNGvmIXBdxZxUWcc7CGIaCWhjNQMW80a'
+    consumer_key = 'sKLz5yvDnmIr40yicNGBMBTax'
+    consumer_secret = '1i1U513KAjszpJmYX02QUMHOIJpDishS8MoDJDdEvRuahSGe42'
 
-    access_token = '2936445550-sQGC6DPNjI8wwRmUKJM7W8vxa6jSOElNn0e3Xga'
-    access_token_secret = 'bKQa1SCAu6vd9hKJGw30NnPYlzQ4NegT9afubYuYRmD5w'
+    access_token = '870293629742567425-MbTugzaAx1YsbVUwHS8aiKPNCOLk7CX'
+    access_token_secret = 'Hmr6iW42sFjXArT0Y1H7uenoxXGhAorgWqLcUPIcvhVVd'
 
     # create instance of the tweepy tweet stream listener
     listener = TweetStreamListener()
