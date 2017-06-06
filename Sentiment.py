@@ -4,13 +4,20 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 from textblob import TextBlob
 import sys
+import signal
 
 keyWord = input("Please enter a keyword (No spaces allowed): ")
 
-##TODO: apostrophies close paranthesis and cause an error!!
-##TODO: Handle
+#TODO:
+
+def sigint_handler(signum, frame):
+    print()
+    print()
+    sys.exit("Goodbye")
+    return
 
 
+signal.signal(signal.SIGINT, sigint_handler)
 
 class TweetStreamListener(StreamListener):
     # on success
@@ -22,30 +29,25 @@ class TweetStreamListener(StreamListener):
         # cur.execute("select relname from pg_class where relkind='r' and relname !~ '^(pg_|sql_)';")
         # print(cur.fetchall())
 
-
         try:
             # decode json
             dict_data = json.loads(data)
-
 
             if 'text' in dict_data:
                 # pass tweet into TextBlob
                 tweetS = TextBlob(dict_data["text"])
                 handle = '@%s' % (dict_data['user']['screen_name'])
                 tweet = '%s' % dict_data['text'].encode('ascii', 'ignore')
+                time = '%s' % dict_data['created_at']
                 tweet = tweet[2:]
                 tweet = tweet[:-1]
                 tweet = tweet.replace("'", "")
-                print(handle)
-                print(tweet)
-
-
-
+                #print(handle)
+                #print(tweet)
 
                 # output sentiment polarity
                 polarity = tweetS.sentiment.polarity
-                print(polarity)
-
+                #print(polarity)
 
                 # determine if sentiment is positive, negative, or neutral
                 if tweetS.sentiment.polarity < 0:
@@ -56,9 +58,9 @@ class TweetStreamListener(StreamListener):
                     sentiment = "positive"
 
                 # output sentiment
-                print(sentiment)
+                #print(sentiment)
 
-                insert = f"INSERT INTO testing VALUES ('{tweet}', '{handle}', '{polarity}', '{sentiment}');"
+                insert = f"INSERT INTO testing VALUES ('{tweet}', '{handle}', '{polarity}', '{sentiment}', '{time}');"
                 print(insert)
                 cur.execute(insert)
                 conn.commit()
@@ -71,13 +73,8 @@ class TweetStreamListener(StreamListener):
         except KeyboardInterrupt:
             print()
             print()
-            print("Goodbye :)")
-            sys.exit(0)  # or 1, or whatever
-
-
-    # on failure
-    def on_error(self, status):
-        print(status)
+            sys.exit("Goodbye :)")  # or 1, or whatever
+            return True
 
 if __name__ == '__main__':
     consumer_key = 'sKLz5yvDnmIr40yicNGBMBTax'
