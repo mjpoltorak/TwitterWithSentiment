@@ -8,8 +8,6 @@ import signal
 
 keyWord = input("Please enter a keyword (No spaces allowed): ")
 
-#TODO:
-
 def sigint_handler(signum, frame):
     print()
     print()
