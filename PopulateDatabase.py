@@ -41,17 +41,23 @@ for i in lista:
     for job, result in zip(jobs, r.json()):
         count += 1
         print(count)
-        if count % 77 == 0:
+        if count % 100 == 0:
             print("Sleeping to wait for more API requests")
-            time.sleep(65)
+            time.sleep(120)
 
         else:
             figi_list = result.get('data')
-            figi_list = figi_list[0]['name']
-            print(figi_list)
-            insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
-            cur.execute(insert)
-            conn.commit()
+            if figi_list is None:
+                insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
+                cur.execute(insert)
+                conn.commit()
+            else:
+                figi_list = figi_list[0]['name']
+                print(figi_list)
+                figi_list = figi_list.replace("'", "")
+                insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
+                cur.execute(insert)
+                conn.commit()
 
 
 
