@@ -36,7 +36,6 @@ for i in lista:
     r = requests.post('https://api.openfigi.com/v1/mapping',
                       headers=openfigi_headers,
                       data=json.dumps(jobs))
-    print(r.status_code)
 
 
     for job, result in zip(jobs, r.json()):
@@ -50,16 +49,16 @@ for i in lista:
             figi_list = result.get('data')
             if figi_list is None:
                 print(figi_list)
-                # insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
-                # cur.execute(insert)
-                # conn.commit()
+                insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
+                cur.execute(insert)
+                conn.commit()
             else:
                 figi_list = figi_list[0]['name']
                 print(figi_list)
-                # figi_list = figi_list.replace("'", "")
-                # insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
-                # cur.execute(insert)
-                # conn.commit()
+                figi_list = figi_list.replace("'", "")
+                insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
+                cur.execute(insert)
+                conn.commit()
 
 
 
