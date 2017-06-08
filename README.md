@@ -5,4 +5,4 @@ This program gets live tweets as they come in. The twitter API, tweepy, used her
 Necessary libraries include: json, tweepy, textblob, sys
 
 #PopulateDatabse.py
-Please do not use this script it is currently experiencing a few bugs.
+Please do not run this file as you will add rows to the current database which has been successfully filled. The script populates a database with all NYSE and Nasdaq tickers and their corresponding company names.
