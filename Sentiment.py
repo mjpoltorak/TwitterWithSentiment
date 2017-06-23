@@ -22,7 +22,11 @@ class TweetStreamListener(StreamListener):
     def on_data(self, data):
         import psycopg2
 
-        conn = psycopg2.connect("dbname='postgres' user='postgres' host='dev-datafactory-postgresql.csodrrohkuas.us-east-1.rds.amazonaws.com' password='sbterminal'")
+        password = input("Please Enter the Password for the Postgres Database: ")
+
+        connectionSTR = "dbname='postgres' user='postgres' host='dev-datafactory-postgresql.csodrrohkuas.us-east-1.rds.amazonaws.com' password=" + password;
+
+        conn = psycopg2.connect(connectionSTR)  # GLobal host
         cur = conn.cursor()
         # cur.execute("select relname from pg_class where relkind='r' and relname !~ '^(pg_|sql_)';")
         # print(cur.fetchall())
