@@ -14,7 +14,7 @@ df2ticker = df2["Symbol"]
 lista = dfticker.append(df2ticker)
 
 openfigi_url = 'https://api.openfigi.com/v1/mapping'
-openfigi_apikey = '28fd4b05-17d4-4d89-8d72-294e480749c5'  # Put API Key here
+openfigi_apikey = ''  # Put API Key here
 openfigi_headers = {'Content-Type': 'text/json'}
 
 
@@ -24,12 +24,12 @@ if openfigi_apikey:
 
 
 
-conn = psycopg2.connect("dbname='postgres' user='postgres' host='dev-datafactory-postgresql.csodrrohkuas.us-east-1.rds.amazonaws.com' password='sbterminal'") #GLobal host
+conn = psycopg2.connect("dbname='postgres' user='postgres' host='dev-datafactory-postgresql.csodrrohkuas.us-east-1.rds.amazonaws.com' password=" + password) #GLobal host
 cur = conn.cursor()
 
-count = 0
+count = 5874
 
-for i in lista:
+for i in lista[5874:]:
     print(i)
     jobs = [{'idType': 'TICKER', 'idValue': i, "exchCode":"US"}]
 
@@ -43,7 +43,7 @@ for i in lista:
         print(count)
         if count % 100 == 0:
             print("Sleeping to wait for more API requests")
-            time.sleep(85)  #The information on the website is an estimate. After trial and error this is the true lowest time
+            time.sleep(120)  #The information on the website is an estimate. After trial and error this is the true lowest time (85)
 
         else:
             figi_list = result.get('data')
@@ -59,8 +59,3 @@ for i in lista:
                 insert = f"INSERT INTO tickernamesentiment VALUES ('{i}', '{figi_list}');"
                 cur.execute(insert)
                 conn.commit()
-
-
-
-
-
