@@ -7,7 +7,7 @@ See https://www.openfigi.com/api for more information.
 '''
 
 openfigi_url = 'https://api.openfigi.com/v1/mapping'
-openfigi_apikey = '28fd4b05-17d4-4d89-8d72-294e480749c5'  # Put API Key here
+openfigi_apikey = ''  # Put API Key here
 openfigi_headers = {'Content-Type': 'text/json'}
 
 if openfigi_apikey:
